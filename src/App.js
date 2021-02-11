@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useState } from "react";
+
+import data from "./data";
 
 function App() {
+  const [par, setPar] = useState(0);
+  const [text, setText] = useState([]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let amount = parseInt(par);
+    setText(data.filter((p, index) => index < amount));
+
+    if (amount < 0) setText([data[0]]);
+    if (amount > 8) setPar(8);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section className="section-center">
+      <h3>Tired of boring Lorem Ipsum?</h3>
+      <form className="lorem-form" onSubmit={handleSubmit}>
+        <label htmlFor="amount">Paragraphs:</label>
+        <input
+          type="number"
+          name="amount"
+          id="amount"
+          value={par}
+          onChange={(e) => setPar(e.target.value)}
+        />
+        <button type="submit" className="btn">
+          Select
+        </button>
+      </form>
+
+      <article className="lorem-text">
+        {text.map((p, index) => {
+          return <p key={index}>{p}</p>;
+        })}
+      </article>
+    </section>
   );
 }
 
